@@ -1,0 +1,20 @@
+{
+  "server-uri":"ldaps://ad.marklogic.local:636",
+  "address": "192.168.0.60",
+  "default-user": "CN=Administrator,CN=Users,DC=marklogic,DC=local",
+  "base": "CN=Users,DC=marklogic,DC=local",
+  "admin-dn": "CN=DHS Administrators,CN=Users,DC=marklogic,DC=local",
+  "bind-method": "simple",
+  "ldap-attribute": "sAMAccountName",
+  "memberof-attribute": "memberOf",
+  "member-attribute": "member",
+  "roles":[
+    ["custom-pii-reader", "CN=Flow Developers,CN=Users,DC=marklogic,DC=local"],
+    ["custom-data-hub-admin", "CN=DHS Administrators,CN=Users,DC=marklogic,DC=local"],
+    ["custom-data-hub-developer", "CN=Endpoint Developers,CN=Users,DC=marklogic,DC=local"],
+    ["custom-data-hub-operator", "CN=Flow Operators,CN=Users,DC=marklogic,DC=local"],
+    ["custom-data-hub-monitor", "CN=Flow Operators,CN=Users,DC=marklogic,DC=local"],
+    ["custom-data-hub-explorer-architect", "CN=Endpoint Users,CN=Users,DC=marklogic,DC=local","CN=Endpoint Developers,CN=Users,DC=marklogic,DC=local"],
+    ["custom-odbcUser", "CN=ODBC Users,CN=Users,DC=marklogic,DC=local"]
+  ]
+}
