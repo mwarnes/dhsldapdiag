@@ -2,11 +2,9 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"os"
-
-	"github.com/spf13/cobra"
-	//"github.com/spf13/viper"
 )
 
 type ConfigJson struct {
@@ -29,9 +27,7 @@ var rootCmd = &cobra.Command{
 	Use: "mlldap",
 	Short: "Utility tool to check MarkLogic LDAP configurations" +
 		".",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
-
+	Long: `
 `,
 }
 
@@ -44,6 +40,7 @@ func Execute() {
 	}
 }
 
+// Initialise all the argument flags and switches
 func init() {
 	cobra.OnInitialize(initConfig)
 
@@ -86,8 +83,8 @@ func initConfig() {
 		viper.SetConfigFile(cfgFile)
 	}
 
+	// Default values
 	viper.SetDefault("debug", false)
-
 	viper.SetDefault("bind-method", "simple")
 	viper.SetDefault("ldap-attribute", "sAMAccountName")
 	viper.SetDefault("memberof-attribute", "memberOf")

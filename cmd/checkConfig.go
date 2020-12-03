@@ -25,15 +25,21 @@ import (
 	"time"
 )
 
+// Structure that holds the Role to External DN mapping
 type roleStruct struct {
 	rolename   string
 	externalDN []string
 }
 
+// Hold a number of role strictures
 var roles []roleStruct
+
+// Some LDAP variables
 var accountuid string
 var accountdn string
 var accountpword string
+
+// Admin password verified
 var verified bool
 
 //var logmsg color.Style
@@ -59,6 +65,7 @@ func init() {
 
 }
 
+// Main function that calls a number of other functions to check a MarkLogic LDAP configuration
 func checkLdapConfiguration() {
 	//logmsg = color.New(color.FgBlue, color.OpBold)
 	logmsg = color.HEX("#1976D2")
@@ -83,15 +90,15 @@ func checkLdapConfiguration() {
 	screen.MoveTopLeft()
 	banner("DHS LDAP Verification")
 	data := [][]string{
-		[]string{"Security Admin DN", admindn},
-		[]string{"DNS Address", address},
-		[]string{"Server URI", serveruri},
-		[]string{"Base", base},
-		[]string{"Default User", defaultuser},
-		[]string{"Bind Method", bindmethod},
-		[]string{"LDAP Attribute", ldapattribute},
-		[]string{"MemberOf Attribute", memberofattribute},
-		[]string{"Member Attribute", memberattribute},
+		{"Security Admin DN", admindn},
+		{"DNS Address", address},
+		{"Server URI", serveruri},
+		{"Base", base},
+		{"Default User", defaultuser},
+		{"Bind Method", bindmethod},
+		{"LDAP Attribute", ldapattribute},
+		{"MemberOf Attribute", memberofattribute},
+		{"Member Attribute", memberattribute},
 	}
 
 	table := tablewriter.NewWriter(os.Stdout)
@@ -105,6 +112,7 @@ func checkLdapConfiguration() {
 	}
 	table.Render()
 
+	// Read the configuration file and unmarshal to a Go structure for the Roles to External DN mapping
 	dat, _ := ioutil.ReadFile(viper.ConfigFileUsed())
 	var configJson ConfigJson
 	err := json.Unmarshal(dat, &configJson)
@@ -112,6 +120,7 @@ func checkLdapConfiguration() {
 		log.Println(err)
 	}
 
+	// Display the Roles to External mapping for the user to check before proceeding
 	table = tablewriter.NewWriter(os.Stdout)
 	table.SetHeader([]string{"Role", "External DN"})
 	table.SetColMinWidth(1, 80)
@@ -129,7 +138,7 @@ func checkLdapConfiguration() {
 
 	promptContinue(color.Question.Sprintf("Continue"), "Y")
 
-	// Determine LDAP protocol
+	// Determine LDAP/LDAPS protocol
 	u, err := url.Parse(serveruri)
 	if err != nil {
 		log.Println(serveruri, " is not a valid uri.")
@@ -148,6 +157,7 @@ func checkLdapConfiguration() {
 		os.Exit(0)
 	}
 
+	// Extract host and port
 	host := u.Host
 	_, port, err := net.SplitHostPort(host)
 	if err != nil {
@@ -159,6 +169,7 @@ func checkLdapConfiguration() {
 	}
 	hostname := u.Hostname()
 
+	// Perform a basic TCP connection test to the LDAP server and display some network statistics
 	success, failures := checkConnectivity(address, hostname, port)
 	if success == 0 {
 		color.Error.Println("Unable to connect to any LDAP Servers.")
@@ -174,14 +185,20 @@ func checkLdapConfiguration() {
 		promptContinue(color.Question.Sprintf("Continue to check LDAP Default User bind"), "Y")
 	}
 
+	// Verify the Default User bind
 	conn := checkLdapAdminBind(hostname, port, isLdapSecure, bindmethod, defaultuser, password)
 	defaultUserConn := conn
 
+	// Check there is at leat one user who is amember of the Admin DN Group
 	adminaccounts := checkAdminDN(conn, admindn, base, memberofattribute, ldapattribute)
 
+	// Optionally verify that the Admin user is able to connect
 	verified = verifyAdminAccount(hostname, port, isLdapSecure, bindmethod, adminaccounts)
 
+	// Check User/Role mappings
 	checkRolesDN(defaultUserConn, configJson, base, memberofattribute, ldapattribute)
+
+	//Generate the Role requests
 	generateRolesRequests("curl")
 
 }
