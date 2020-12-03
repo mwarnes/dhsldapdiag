@@ -26,8 +26,8 @@ var (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "dhsldap",
-	Short: "Utility tool to check DHS LDAP configurations" +
+	Use: "mlldap",
+	Short: "Utility tool to check MarkLogic LDAP configurations" +
 		".",
 	Long: `A longer description that spans multiple lines and likely contains
 examples and usage of using your application. For example:
@@ -47,12 +47,12 @@ func Execute() {
 func init() {
 	cobra.OnInitialize(initConfig)
 
-	cwd,err := os.Getwd()
+	cwd, err := os.Getwd()
 	cfgPath := "."
 	if err == nil {
 		cfgPath = cwd
 	}
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", cfgPath+"/dhsldap.json", "config file.")
+	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", cfgPath+"/config.json", "config file.")
 
 	rootCmd.PersistentFlags().BoolP("debug", "", false, "Enable debugging.")
 	viper.BindPFlag("debug", rootCmd.PersistentFlags().Lookup("debug"))
@@ -97,7 +97,7 @@ func initConfig() {
 	if err := viper.ReadInConfig(); err == nil {
 		fmt.Println("Using config file:", viper.ConfigFileUsed())
 	} else {
-		fmt.Println("Unable to read config file ",viper.ConfigFileUsed(), err)
+		fmt.Println("Unable to read config file ", viper.ConfigFileUsed(), err)
 	}
 
 }

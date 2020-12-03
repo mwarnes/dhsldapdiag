@@ -12,10 +12,14 @@ phases:
       - echo Getting packages
       - go get ./...
       - echo Compiling the Go code...
-      - go build -o mlldap main.go
+      - GOOS=linux GOARCH=amd64 go build -o mlldap main.go
+      - GOOS=windows GOARCH=amd64 go build -o mlldap-win.exe
+      - GOOS=darwin GOARCH=amd64 go build -o mlldap-mac.bin
   post_build:
     commands:
       - echo Build completed on `date`
 artifacts:
   files:
     - mlldap
+    - mlldap-win.exe
+    - mlldap-mac.bin

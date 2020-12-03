@@ -23,7 +23,7 @@
 /Godeps/
 
 ## Executables
-dhsldap
-dhsldap-lnx
-dhsldap-win.exe
-dhsldap-mac
+mlldap
+mlldap-lnx
+mlldap-win.exe
+mlldap-mac
