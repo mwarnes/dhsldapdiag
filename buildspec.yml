@@ -23,3 +23,4 @@ artifacts:
     - mlldap
     - mlldap-win.exe
     - mlldap-mac.bin
+  discard-paths: yes
