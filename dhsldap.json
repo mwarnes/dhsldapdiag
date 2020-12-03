@@ -1,20 +1,20 @@
 {
-  "server-uri":"ldaps://ad.marklogic.local:636",
-  "address": "192.168.0.60",
-  "default-user": "CN=Administrator,CN=Users,DC=marklogic,DC=local",
-  "base": "CN=Users,DC=marklogic,DC=local",
-  "admin-dn": "CN=DHS Administrators,CN=Users,DC=marklogic,DC=local",
+  "server-uri":"ldaps://mwca.localdomain:636",
+  "address": "192.168.0.50",
+  "default-user": "CN=Directory Manager",
+  "base": "dc=localdomain",
+  "admin-dn": "CN=DHS Administrators,ou=Groups,dc=localdomain",
   "bind-method": "simple",
-  "ldap-attribute": "sAMAccountName",
+  "ldap-attribute": "uid",
   "memberof-attribute": "memberOf",
   "member-attribute": "member",
   "roles":[
-    ["custom-pii-reader", "CN=Flow Developers,CN=Users,DC=marklogic,DC=local"],
-    ["custom-data-hub-admin", "CN=DHS Administrators,CN=Users,DC=marklogic,DC=local"],
-    ["custom-data-hub-developer", "CN=Endpoint Developers,CN=Users,DC=marklogic,DC=local"],
-    ["custom-data-hub-operator", "CN=Flow Operators,CN=Users,DC=marklogic,DC=local"],
-    ["custom-data-hub-monitor", "CN=Flow Operators,CN=Users,DC=marklogic,DC=local"],
-    ["custom-data-hub-explorer-architect", "CN=Endpoint Users,CN=Users,DC=marklogic,DC=local","CN=Endpoint Developers,CN=Users,DC=marklogic,DC=local"],
-    ["custom-odbcUser", "CN=ODBC Users,CN=Users,DC=marklogic,DC=local"]
+    ["custom-pii-reader", "CN=Flow Developers,ou=Groups,dc=localdomain"],
+    ["custom-data-hub-admin", "CN=DHS Administrators,ou=Groups,dc=localdomain"],
+    ["custom-data-hub-developer", "CN=Endpoint Developers,ou=Groups,dc=localdomain"],
+    ["custom-data-hub-operator", "CN=DHS Operators,ou=Groups,dc=localdomain"],
+    ["custom-data-hub-monitor", "CN=DHS Monitors,ou=Groups,dc=localdomain"],
+    ["custom-data-hub-explorer-architect", "CN=Endpoint Developers,ou=Groups,dc=localdomain","cn=Endpoint Users,ou=Groups,dc=localdomain"],
+    ["custom-odbcUser", "CN=Sterling123,CN=Users,DC=marklogic,DC=local"]
   ]
 }
